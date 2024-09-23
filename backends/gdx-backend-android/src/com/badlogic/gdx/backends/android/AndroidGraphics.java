@@ -149,14 +149,16 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 	}
 
 	protected void updatePpi () {
-		DisplayMetrics metrics = new DisplayMetrics();
-		app.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		DisplayMetrics densityMetrics = new DisplayMetrics();
 
-		ppiX = metrics.xdpi;
-		ppiY = metrics.ydpi;
-		ppcX = metrics.xdpi / 2.54f;
-		ppcY = metrics.ydpi / 2.54f;
-		density = metrics.density;
+		app.getWindowManager().getDisplay(Display.DEFAULT_DISPLAY).getBounds(dimensionMetrics);
+		app.getWindowManager().getDisplay(Display.DEFAULT_DISPLAY).getDensity(densityMetrics);
+
+		ppiX = dimensionMetrics.xdpi;
+		ppiY = dimensionMetrics.ydpi;
+		ppcX = dimensionMetrics.xdpi / 2.54f;
+		ppcY = dimensionMetrics.ydpi / 2.54f;
+		density = densityMetrics.density;
 	}
 
 	protected boolean checkGL20 () {
@@ -335,7 +337,7 @@ public class AndroidGraphics extends AbstractGraphics implements Renderer {
 
 		logManagedCachesStatus();
 
-		Display display = app.getWindowManager().getDefaultDisplay();
+		Display display = app.getWindowManager().getDisplay(Display.DEFAULT_DISPLAY);
 		this.width = display.getWidth();
 		this.height = display.getHeight();
 		this.lastFrameTime = System.nanoTime();
